@@ -7,6 +7,7 @@ import time
 
 height, width = 320, 240
 # 640 x 480 is image ratio
+# no it is not
 vid = cv2.VideoCapture(0)
 vid.set(3,height)
 vid.set(4,width)
