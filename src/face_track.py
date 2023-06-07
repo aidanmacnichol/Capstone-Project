@@ -11,7 +11,7 @@ Done by Aidan MacNichol
 height, width = 320, 240
 # 640 x 480 is image ratio
 # no it is not
-vid = cv2.VideoCapture(1) #Pi is 1
+vid = cv2.VideoCapture(0) #Pi is 0
 vid.set(3,height)
 vid.set(4,width)
 assert vid.isOpened()
@@ -21,7 +21,7 @@ face_locations = []
 # So I can send data to the Arduino ()
 # Windows PC: 'COM4'
 # raspberry Pi '/dev/ttyACM0' 
-ArduinoSerial = serial.Serial('COM4',9600,timeout=0.1)
+ArduinoSerial = serial.Serial('/dev/ttyACM0',9600,timeout=0.1)
 
 # Used to convert x,y coordinates to a string and send to arduino
 def convertTuple(tup):
@@ -41,9 +41,6 @@ def findForehead(p1, p2):
      #cv2.circle(frame, midpoint ,5,(0,0,255), -1)
 
      return midpoint    
-
-
-
 
 while True:
     ret, frame = vid.read()
