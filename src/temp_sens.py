@@ -14,16 +14,23 @@ import pigpio
 #       self.i2cBus = smbus.SMBus(1)
 
 
-#       """
-#       Sensor has 8 pixels. Each pixels temperature value is represented with two bytes.
-#       That gives us 16 bytes then there are two bytes for the PTAT + one for the checksum:
+       """
+       Sensor has 8 pixels. Each pixels temperature value is represented with two bytes.
+       That gives us 16 bytes then there are two bytes for the PTAT + one for the checksum:
 
-#       [  0  |   1  | 2  | 3  .....  16 |  17 |  18 ]                        
-#       [ptat | ptat | t1 | t2 ..... t15 | t16 | CRC ]
+       [  0  |   1  | 2  | 3  .....  16 |  17 |  18 ]                        
+       [ptat | ptat | t1 | t2 ..... t15 | t16 | CRC ]
 
-#       To calculate a temperature value for a pixel we take first byte + second byte * 256 *0.1
+       To calculate a temperature value for a pixel we take first byte + second byte * 256 *0.1
+      
 
-#       """
+       HARDWARE SETUP:  
+      
+      SDA: (temp blue) pin 3      --THESE PINS ARE I2c channel 1
+      SCL: (temp yellow) pin 5
+
+      rn have a 10k pullup resistor
+       """
 
 
 #       # Initialize piGPIO = pi
@@ -104,44 +111,3 @@ if __name__ == '__main__':
       print(temp)
       time.sleep(1)
 
-
-
-
-#************************************* THIS ONE SUCKS ****************************************************
-
-# i2c_bus = smbus.SMBus(1)
-# OMRON_1=0x0a 					# 7 bit I2C address of Omron MEMS Temp Sensor D6T-44L **
-# OMRON_BUFFER_LENGTH=35				# Omron data buffer size **
-# temperature_data=[0]*OMRON_BUFFER_LENGTH 	# initialize the temperature data list **
-
-# # intialize the pigpio library and socket connection to the daemon (pigpiod)
-# pi = pigpio.pi()              # use defaults ** 
-# version = pi.get_pigpio_version() **
-# print('PiGPIO version = '+str(version)) **
-# handle = pi.i2c_open(1, 0x0a) # open Omron D6T device at address 0x0a on bus 1 **
-
-# # initialize the device based on Omron's appnote 1
-# result=i2c_bus.write_byte(OMRON_1,0x4c); ** 
-# #print 'write result = '+str(result)
-
-# #for x in range(0, len(temperature_data)):
-#    #print x
-#    # Read all data  tem
-#    #temperature_data[x]=i2c_bus.read_byte(OMRON_1)
-# (bytes_read, temperature_data) = pi.i2c_read_device(handle, len(temperature_data))
-
-# temperature=[0]*OMRON_BUFFER_LENGTH
-# a = 0
-
-# for i in range(2, len(temperature_data)-2, 2):
-#    temperature[a] = float((temperature_data[i+1] << 8) | temperature_data[i])/10
-#    a += 1
-
-# # Display data 
-# print('Bytes read from Omron D6T: '+str(bytes_read))
-# print('Data read from Omron D6T : ')
-# # for x in range(bytes_read):
-# #    print(temperature_data[x]),
-
-# print(temperature)
-# #print 'done'
